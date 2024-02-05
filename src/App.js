@@ -1,7 +1,6 @@
 import { Route, Routes, BrowserRouter as Router } from "react-router-dom";
 import Navbar from "./components/Navbar";
-import Login from "./pages/Login";
-import { Home, Play } from "./pages";
+import { Home, Play, Login, Signup } from "./pages";
 
 const App = () => {
   return (
@@ -12,6 +11,7 @@ const App = () => {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/play" element={<Play />} />
+          <Route path="/signup" element={<Signup />} />
         </Routes>
       </Router>
     </main>
