@@ -1,4 +1,3 @@
-import { NavLink } from "react-router-dom";
 import { FaHome } from "react-icons/fa";
 import { FaGooglePlay } from "react-icons/fa6";
 import { IoLogOut } from "react-icons/io5";
@@ -17,7 +16,7 @@ const Navbar = () => {
 const NavbarIcons = ({ icon, text }) => (
   <div className="sidebar-icon group">
     {icon}
-    <span class="sidebar-tooltip group-hover:scale-100">{text}</span>
+    <span className="sidebar-tooltip group-hover:scale-100">{text}</span>
   </div>
 );
 

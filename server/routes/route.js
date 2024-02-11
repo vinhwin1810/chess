@@ -10,7 +10,7 @@ router.get("/", (request, response) => {
 });
 
 // Sign UP
-router.post("/register", async (request, response) => {
+router.post("/signup", async (request, response) => {
   bcrypt
     .hash(request.body.password, 10)
     .then((hashedPassword) => {
