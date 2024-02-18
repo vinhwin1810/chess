@@ -2,11 +2,15 @@ import bcrypt from "bcrypt";
 import express from "express";
 import User from "../models/User.js";
 import jwt from "jsonwebtoken";
-import app from "../index.js";
+import authenticateToken from "../middleware/auth.js";
 
 const router = express.Router();
 router.get("/", (request, response) => {
   response.send("Welcome to the server");
+});
+router.get("/play", authenticateToken, (req, res) => {
+  // Logic for the play route
+  res.send("Welcome to the Play page");
 });
 
 // Sign UP

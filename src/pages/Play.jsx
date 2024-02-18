@@ -75,6 +75,30 @@ function Play() {
     return true;
   }
 
+  useEffect(() => {
+    const authToken = localStorage.getItem("authToken");
+    fetch("http://localhost:8000/play", {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+      },
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log(data);
+        // Handle the data
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+        // Handle the error, e.g., by logging out the user or showing an error message
+      });
+  }, []); // This empty array makes the effect only run once when the component mounts
+
   return (
     <section className="bg-gray-800">
       <div className="flex flex-col justify-center items-center h-screen overflow-hidden">

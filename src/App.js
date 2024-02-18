@@ -1,5 +1,6 @@
 import { Route, Routes, BrowserRouter as Router } from "react-router-dom";
 import Navbar from "./components/Navbar";
+import ProtectedRoute from "./components/ProtectedRoute";
 import { Home, Play, Login, Signup } from "./pages";
 
 const App = () => {
@@ -10,7 +11,15 @@ const App = () => {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/play" element={<Play />} />
+
+          <Route
+            path="/play"
+            element={
+              <ProtectedRoute>
+                <Play />
+              </ProtectedRoute>
+            }
+          />
           <Route path="/signup" element={<Signup />} />
         </Routes>
       </Router>

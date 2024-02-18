@@ -44,6 +44,9 @@ const Login = () => {
       if (response.ok) {
         const data = await response.json();
         if (data.message === "Login Successful") {
+          // Store the token in local storage
+          localStorage.setItem("authToken", data.token);
+
           setError("");
           setShowToast(true); // Show the toast notification
 
@@ -160,7 +163,8 @@ const Login = () => {
             </form>
             {showToast && (
               <Toast
-                message="You Are Registered Successfully"
+                className="fixed backdrop:*:first-letter:first-line:marker:selection:file:placeholder:before: bottom-5 right-5" // Add the toast component
+                message="You Are Logged In!!"
                 onClose={() => setShowToast(false)}
               />
             )}

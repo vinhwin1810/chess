@@ -1,5 +1,4 @@
 import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 
 const CustomDialog = ({ over, onClose }) => {
   // Removed the internal state management since it will be controlled by the parent now
