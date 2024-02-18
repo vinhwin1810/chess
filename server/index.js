@@ -5,8 +5,8 @@ import dotenv from "dotenv";
 import cors from "cors";
 import morgan from "morgan";
 import router from "./routes/route.js";
-import { Server } from "socket.io";
-import http from "http";
+// import { Server } from "socket.io";
+// import http from "http";
 
 // initialize express
 const app = express();
@@ -20,23 +20,37 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 // define routes
 app.use(router);
-
-// create server
-const server = http.createServer(app);
 // define port
 const PORT = process.env.PORT || 5000;
 
-// create socket.io instance
-const io = new Server(server, {
-  cors: "*", // allow connection from any origin
-});
+// const server = http.createServer(
+//   { requestCert: false, rejectUnauthorized: false },
+//   app
+// );
+// // create socket.io instance
+// const io = new Server(server, {
+//   cors: "*", // allow connection from any origin
+//   methods: ["GET", "POST"], // allow GET and POST requests
+// });
+// // io.connection
+// io.on("connection", (socket) => {
+//   console.log(`${socket.id} connected`);
 
-// io.connection
-io.on("connection", (socket) => {
-  // socket refers to the client socket that just got connected.
-  // each socket is assigned an id
-  console.log(socket.id, "connected");
-});
+//   // Joining a game room
+//   io.on("connection", (socket) => {
+//     socket.on("joinGame", (gameID) => {
+//       socket.join(gameID);
+//       console.log(`Socket ${socket.id} joined game ${gameID}`);
+//     });
+
+//     socket.on("moveMade", (gameID, move) => {
+//       // Process the move here (e.g., update game state)
+//       io.to(gameID).emit("gameUpdated", move); // Broadcast the move to all sockets in the game
+//     });
+//   });
+
+//   // Additional game logic here
+// });
 
 // listen to port
 app.listen(PORT, () => {

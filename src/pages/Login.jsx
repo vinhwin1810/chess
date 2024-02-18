@@ -64,7 +64,7 @@ const Login = () => {
     <section className="bg-gray-700">
       <div className="flex flex-col justify-center items-center h-screen">
         <Link
-          to="/home"
+          to="/"
           className="flex flex-row gap-3 text-green-500 hover:text-white 
           font-bold text-4xl py-10 px-4 transition-all duration-300 ease-linear
           cursor-pointer"

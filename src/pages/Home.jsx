@@ -1,11 +1,7 @@
-import CustomDialog from "../components/CustomDialog";
-
 const Home = () => {
   return (
-    <div>
-      <h1 className="text-4xl font-semibold text-white">
-        <CustomDialog />
-      </h1>
+    <div className="bg-gray-800 h-screen">
+      <h1 className="text-4xl font-semibold text-white"></h1>
       <p className="text-white">
         Welcome to the home page. This is a protected route.
       </p>

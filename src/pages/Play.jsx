@@ -1,33 +1,52 @@
-import { useState, useMemo, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { Chessboard } from "react-chessboard";
 import { Chess } from "chess.js";
-// import CustomDialog from "./components/CustomDialog";
+import CustomDialog from "../components/CustomDialog";
+// import socket from "../socket";
 
-function Play({ players, room, orientation, cleanup }) {
-  const chess = useMemo(() => new Chess(), []); // <- 1
-  const [fen, setFen] = useState(chess.fen()); // <- 2
+function Play() {
+  const [game, setGame] = useState(new Chess());
+  const [fen, setFen] = useState(game.fen());
   const [over, setOver] = useState("");
+  // const [gameId, setGameId] = useState("your-game-id"); // You need to manage game IDs
+
+  // useEffect(() => {
+  //   // Join a game when the component mounts
+  //   socket.emit("joinGame", gameId);
+
+  //   // Listen for moves made by the opponent
+  //   socket.on("moveMade", (move) => {
+  //     game.move(move);
+  //     setFen(game.fen());
+  //   });
+
+  //   return () => {
+  //     socket.off("moveMade");
+  //   };
+  // }, [game, gameId]);
+
+  // Reset game state
+  const resetGame = useCallback(() => {
+    const newGame = new Chess();
+    setGame(newGame);
+    setFen(newGame.fen());
+    setOver("");
+  }, []);
 
   const makeAMove = useCallback(
     (move) => {
       try {
-        const result = chess.move(move); // update Chess instance
-        setFen(chess.fen()); // update fen state to trigger a re-render
+        const result = game.move(move);
+        setFen(game.fen());
+        // socket.emit("makeMove", { gameId, move });
 
-        console.log("over, checkmate", chess.isGameOver(), chess.isCheckmate());
-
-        if (chess.isGameOver()) {
-          // check if move led to "game over"
-          if (chess.isCheckmate()) {
-            // if reason for game over is a checkmate
-            // Set message to checkmate.
+        if (game.isGameOver()) {
+          if (game.isCheckmate()) {
             setOver(
-              `Checkmate! ${chess.turn() === "w" ? "black" : "white"} wins!`
+              `Checkmate! ${game.turn() === "w" ? "black" : "white"} wins!`
             );
-            // The winner is determined by checking which side made the last move
-          } else if (chess.isDraw()) {
-            // if it is a draw
-            setOver("Draw"); // set message to "Draw"
+          } else if (game.isDraw()) {
+            setOver("Draw");
           } else {
             setOver("Game over");
           }
@@ -36,41 +55,35 @@ function Play({ players, room, orientation, cleanup }) {
         return result;
       } catch (e) {
         return null;
-      } // null if the move was illegal, the move object if the move was legal
+      }
     },
-    [chess]
+    [game]
   );
+
+  // Adjust onDrop function to use `game` from state instead of `chess`
   function onDrop(sourceSquare, targetSquare) {
     const moveData = {
       from: sourceSquare,
       to: targetSquare,
-      color: chess.turn(),
-      // promotion: "q",
+      promotion: "q", // This is a typical promotion choice, but adjust as needed
     };
 
     const move = makeAMove(moveData);
 
-    // illegal move
     if (move === null) return false;
 
     return true;
   }
 
-  // Play component returned jsx
   return (
-    <>
-      <div className="w-[50%] h-[50%]">
-        <Chessboard position={fen} onPieceDrop={onDrop} /> {/**  <- 4 */}
+    <section className="bg-gray-800">
+      <div className="flex flex-col justify-center items-center h-screen overflow-hidden">
+        <div className="border-black w-full rounded-lg shadow-lg border-8 md:mt-0 sm:max-w-md xl:p-0 ">
+          <Chessboard position={fen} onPieceDrop={onDrop} />
+        </div>
+        {game.isGameOver() && <CustomDialog over={over} onClose={resetGame} />}
       </div>
-      {/* <CustomDialog // <- 5
-        open={Boolean(over)}
-        title={over}
-        contentText={over}
-        handleContinue={() => {
-          setOver("");
-        }}
-      /> */}
-    </>
+    </section>
   );
 }
 
